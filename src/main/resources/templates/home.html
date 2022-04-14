@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+</head>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+Welcome to Forum!
+<button value="sign_in" onclick="javascript:window.location.href='../login'">Sign In</button>
+<button value="sign_up" onclick="javascript:window.location.href='../register'">Sign Up</button>
+<table class="display" id="questions">
+        <thead>
+        <tr>
+            <th style="width: 400px;">Time</th>
+            <th style="width: 400px;">Title</th>
+            <th style="width: 2000px;">Description</th>
+            <th style="width: 200px;">Answered</th>
+            <th style="width: 100px;">Viewed</th>
+            <th style="width: 100px;">Liked</th>
+            <th style="width: 50px;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="question : ${questions}">
+            <td th:text=${question.create_time}/>
+            <td th:text=${question.title}/>
+            <td><a th:href="@{'/question_detail/'+ ${question.id}}" th:text=${question.description}></a></td>
+            <td th:text=${question.answer_count}/>
+            <td th:text=${question.view_count}/>
+            <td th:text=${question.like_count}/>
+            <td>
+            <form th:action="@{/like_question}" method="get">
+                <input type="hidden" th:value="${question.id}" th:id="questionId" th:name="questionId"/>
+                <button type="submit" >Like</button>
+            </form>
+            </td>
+        </tr>
+        </tbody>
+</table>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#questions").DataTable({
+        "aLengthMenu" : [5, 10, 15],
+        "oLanguage": {
+            "sZeroRecords" : "No Results",
+            "sEmptyTable" : "No Questions",
+            "sInfo" : "Showing _START_ to  _END_ of _TOTAL_ Questions",
+            "sSearch" : "Search"
+        }
+    });
+});
+</script>
+<script type="text/javascript">
+    function add(){
+        var  x=document.getElementById("text");
+        var  a= x.value;
+        a++;
+        x.value=a;
+    }
+</script>
+<button value="create_question" onclick="javascript:window.location.href='../create_question'">Create Question</button><br/>
+</body>
+</html>
